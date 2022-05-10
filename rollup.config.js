@@ -1,9 +1,9 @@
-import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
-import inject from 'rollup-plugin-inject'
-import nodeResolve from 'rollup-plugin-node-resolve'
-import replace from 'rollup-plugin-replace'
-import uglify from 'rollup-plugin-uglify'
+import babel from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import inject from '@rollup/plugin-inject'
+import nodeResolve from '@rollup/plugin-node-resolve'
+import replace from '@rollup/plugin-replace'
+
 
 console.log(process.env.npm_package_name)
 
@@ -26,13 +26,13 @@ const plugins = [
   babel({
     exclude: 'node_modules/**',
     babelrc: false,
+    babelHelpers: 'external',
     presets: [
-      'es2015-rollup',
-      'react',
-      'stage-2'
+      '@babel/preset-env',
+      '@babel/preset-react',
     ],
     plugins: [
-      'external-helpers',
+      '@babel/plugin-external-helpers',
     ],
   }),
   commonjs(),
@@ -42,12 +42,11 @@ const plugins = [
   }),
 ]
 
-if (prod) plugins.push(uglify())
 
 export default {
-  entry: 'src/index.js',
   exports: 'named',
   external: ['react'],
+  input: 'src/index.js',
   globals: { react: 'React' },
   moduleName: 'react_tinyletter',
   plugins,
